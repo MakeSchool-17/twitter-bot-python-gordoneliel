@@ -7,8 +7,8 @@ class HashTable:
         self.buckets = [None] * self.size
         self.value = [None] * self.size
 
-    ''' Put a new key value pair in to the HashTable '''
-    def put(self, key, value):
+    ''' set a key value pair in to the HashTable  or replace existing '''
+    def set(self, key, value):
         bucket = self.hash(key, len(self.buckets))
 
         if self.buckets[bucket] is None:
@@ -31,21 +31,27 @@ class HashTable:
 
     ''' Get a key value pair from the HashTable '''
     def get(self, key, value):
-        bucket = hash(key, len(self.buckets))
+        initial_bucket = self.hash(key, len(self.buckets))
 
-        if self.buckets[bucket] is None:
-            bucket = double_hash(key, len(self.buckets), bucket)
+        found = False
+
+        while self.buckets[initial_bucket] is not None and not found:
+            if self.value[initial_bucket] == value:
+                found = True
 
         return self.buckets[key]
 
+    ''' A hash function for hashing the key '''
     def hash(self, key, size):
         return key % size
 
+    ''' Second hash function for double hashing '''
     def double_hash(self, key, size, old_bucket):
         return old_bucket * hash(self, key, size)
 
+    ''' Setters and Getters '''
     def __setitem__(self, key, value):
-            self.put(key, value)
+            self.set(key, value)
 
     def __getitem__(self, key):
             return self.get(key)
@@ -55,23 +61,25 @@ class HashTable:
 
     def __str__(self):
             result = '{'
-            for b in self.buckets:
-                for e in b:
-                    result = result + str(e) + ':' + str(e) + ','
+            for b, v in zip(self.buckets, self.value):
+                if b is not None and v is not None:
+                    result = result + str(b) + ':' + str(v) + ','
             return result[:-1] + '}'
 
     def main():
+        # value = int(inset("Enter a value"))
         table = HashTable()
-        table.put(1, 8)
-        table.put(1, "one")
-        table.put(4, "joe")
-        table.put(3, "peter")
+        table.set(1, 8)
+        table.set(1, "one")
+        table.set(4, "joe")
+        table.set(3, "peter")
         table[3] = "Nancy"
         table[11] = "Fiona"
-        print(table.value)
-        print(table.buckets)
+        # print(table.value)
+        # print(table.buckets)
         print(len(table))
         print(table)
+        print(table.get(4, "joe"))
 
 if __name__ == '__main__':
     HashTable.main()
