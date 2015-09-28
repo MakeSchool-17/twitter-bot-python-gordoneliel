@@ -6,93 +6,92 @@ class HashTable:
         self.size = 15
         self.length = 0
         self.buckets = [None] * self.size
-        self.value = [None] * self.size
         self.LOAD_FACTOR_THRESHOLD = 0.6
 
     ''' set a key value pair in to the HashTable  or replace existing '''
     def set(self, key, value):
-
-        load = self.load_factor()
+        load = self._load_factor()
         print("Load is: " + str(load))
         # Check load factor to determine whether to grow the table
         if load > self.LOAD_FACTOR_THRESHOLD:
             # Grow the hashtable
-            self.grow()
+            print("Growing hash table")
+            self._grow()
+            print("Grown Size:" + str(self.size))
 
-        tries = 1
-
-        bucket = self.base_hash(key, len(self.buckets), tries)
-        print(key, value, bucket)
-        if self.buckets[bucket] is None:
-            self.buckets[bucket] = key
-            self.value[bucket] = value
-            self.length += 1
-        else:
-            if self.buckets[bucket] == key:
-                self.value[bucket] = value
-            else:
-                tries += 1
-                next_bucket = self.base_hash(key, len(self.buckets), tries)
-                while self.buckets[next_bucket] is not None and self.buckets[next_bucket] != key:
-                    tries += 1
-                    next_bucket = self.base_hash(key, len(self.buckets), tries)
-                if self.buckets[next_bucket] is None:
-                    self.value[next_bucket] = value
-                    self.buckets[next_bucket] = key
-                    self.length += 1
+        self._set_internal(self.buckets, key, value)
 
     ''' Get a key value pair from the HashTable '''
     def get(self, key):
         tries = 1
-        bucket = self.base_hash(key, len(self.buckets), tries)
+        index = self._base_hash(key, self.size, tries)
+        found = False
 
-        if self.buckets[bucket] is None:
-            return None
-        elif self.buckets[bucket] == key:
-            return self.value[bucket]
+        if self.buckets[index] is None:
+            return self.buckets[index]
+        elif self.buckets[index][0] == key:
+            return self.buckets[index][1]
         else:
             tries += 1
-            bucket = self.base_hash(key, len(self.buckets), tries)
+            index = self._base_hash(key, self.size, tries)
+            while self.buckets[index] is not None and self.buckets[index][0] != key and not found:
+                if self.buckets[index][0] == key:
+                    found = True
+                else:
+                    tries += 1
+                    index = self._base_hash(key, self.size, tries)
+            return self.buckets[index]
 
-            while self.buckets[bucket] is not None and self.buckets[bucket] != key:
+    def contains(self, key):
+        return True if self.get(key) is not None else False
+
+    def _set_internal(self, bucket, key, value):
+        tries = 1
+
+        index = self._base_hash(key, self.size, tries)
+        if bucket[index] is None:
+            bucket[index] = (key, value)
+            self.length += 1
+        else:
+            if bucket[index][0] == key:
+                bucket[index][1] = value
+            else:
                 tries += 1
-                bucket = self.base_hash(key, len(self.buckets), tries)
+                index = self._base_hash(key, self.size, tries)
 
-        # next_bucket = 0
-        #
-        # found = False
-        #
-        # while self.buckets[initial_bucket] is not None and not found and next_bucket != initial_bucket:
-        #     next_bucket = initial_bucket
-        #     if self.buckets[next_bucket] == key:
-        #         found = True
-        #         return self.value[next_bucket]
-        #     else:
-        #         next_bucket = self.double_hash(key, len(self.buckets), initial_bucket)
-        #
-        # return self.value[initial_bucket] if found else None
-
-    ''' A hash function for hashing the key
-        About double hashing: https://en.wikipedia.org/wiki/Double_hashing
-    '''
-    def base_hash(self, key, size, tries):
-        hashValue = hash(key)
-        return (hashValue * tries ** 2 + tries) % size
-
-    # ''' Second hash function for double hashing '''
-    # def double_hash(self, key, size, tries):
-    #     return (tries * self.base_hash(key, size)) % len(self.buckets)
+                while bucket[index] is not None and bucket[index][0] != key:
+                    tries += 1
+                    index = self._base_hash(key, self.size, tries)
+                if bucket[index] is None:
+                    bucket[index] = (key, value)
+                    self.length += 1
 
     ''' Grow buckets
         Double the size of the hashtable each time the load factor exceeds
         LOAD_FACTOR_THRESHOLD
     '''
-    def grow(self):
+    def _grow(self):
         new_size = (self.size * 2) + 1
-        new_bucket = [None] * new_size
-        new_value = [None] * new_size
-        # for key, value in zip(new_bucket, new_value):
+        self.length = 0
+        self.size = new_size
+        new_buckets = [None] * new_size
+        for key_value_pair in self.buckets:
+            if key_value_pair is not None:
+                key = key_value_pair[0]
+                value = key_value_pair[1]
+                self._set_internal(new_buckets, key, value)
+        self.buckets = new_buckets
 
+    ''' A hash function for hashing the key
+        About double hashing: https://en.wikipedia.org/wiki/Double_hashing
+    '''
+    def _base_hash(self, key, size, tries):
+        hashValue = hash(key)
+        return (hashValue * tries ** 2 + tries) % size
+
+    # ''' Second hash function for double hashing '''
+    # def double_hash(self, key, size, tries):
+    #     return (tries * self.base_hash(key, size)) % len(bucket)
 
     ''' Determines the load factor on the hash table
         Load factor = N / M
@@ -100,7 +99,7 @@ class HashTable:
         - N is number of filled buckets
         - M is size of the HashTable
     '''
-    def load_factor(self):
+    def _load_factor(self):
         return self.length / self.size
 
     ''' Setters and Getters '''
@@ -115,9 +114,9 @@ class HashTable:
 
     def __str__(self):
             result = '{'
-            for b, v in zip(self.buckets, self.value):
-                if b is not None and v is not None:
-                    result = result + str(b) + ' : ' + str(v) + ', '
+            for key_value_pair in self.buckets:
+                if key_value_pair is not None:
+                    result = result + str(key_value_pair[0]) + ' : ' + str(key_value_pair[1]) + ', '
             return result[:-2] + '}'
 
     def main():
@@ -131,13 +130,16 @@ class HashTable:
         table.set("Molly", 90)
         table.set("654", 18)
         table["4"] = 99
-        # print(table.get("Bi"))
-        print(table.value)
-        print(table.buckets)
-        print("Size of table: " + str(len(table)))
+
+        print("Number of items: " + str(len(table)))
+        table["Peter"] = 49
+        table["Joseph"] = 3
+        table["Noah"] = 92
+        table["Hugh"] = 1
+        print("Number of items: " + str(table.length))
         print(table)
-        getKey = input("Enter value to get")
-        print(table.get(getKey))
+        getValue = input("Enter value to get \n")
+        print(table.contains(getValue))
 
 if __name__ == '__main__':
     HashTable.main()
