@@ -88,7 +88,11 @@ class HashTable:
         LOAD_FACTOR_THRESHOLD
     '''
     def grow(self):
-        new_bucket = [None] * (self.size * 2)
+        new_size = (self.size * 2) + 1
+        new_bucket = [None] * new_size
+        new_value = [None] * new_size
+        # for key, value in zip(new_bucket, new_value):
+
 
     ''' Determines the load factor on the hash table
         Load factor = N / M
