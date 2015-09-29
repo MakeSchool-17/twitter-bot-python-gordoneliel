@@ -34,16 +34,21 @@ class HashTable:
         elif self.buckets[index][0] == key:
             return self.buckets[index][1]
         else:
-            while self.buckets[index] is not None and not found and initial_index != index:
+            while self.buckets[index] is not None and not found:
                 print("Get indices: " + str(index))
                 if self.buckets[index][0] == key:
                     found = True
                 else:
                     tries += 1
-                    index = self._base_hash(key, self.size, tries)
+                    index = index = self._double_hash(index, self.size, tries)
+
+                if initial_index == index:
+                    break
+
             if found:
                 return self.buckets[index][1]
             else:
+                print("Was None")
                 return None
 
     def contains(self, key):
@@ -59,14 +64,15 @@ class HashTable:
             bucket[index] = (key, value)
         else:
             while bucket[index] is not None and bucket[index][0] != key:
-                print("Set indices: " + str(index))
+                print("Set indices: " + str(index) + " " + key)
                 tries += 1
-                index = self._base_hash(key, self.size, tries)
+                index = self._double_hash(index, self.size, tries)
 
             if bucket[index] is None:
                 self.length += 1
-
+            print("Key is set: " + key + " at index " + str(index))
             bucket[index] = (key, value)
+            print(bucket[index])
 
     ''' Grow buckets
         Double the size of the hashtable each time the load factor exceeds
@@ -89,11 +95,13 @@ class HashTable:
     '''
     def _base_hash(self, key, size, tries):
         hashValue = hash(key)
-        return (hashValue * tries ** 2 + tries) % size
+        # print("Hashing ", key + " to " + str((hashValue * (tries ** 2) + tries) % size))
+        # return (hashValue * (tries ** 2) + tries) % size
+        return hashValue % size
 
-    # ''' Second hash function for double hashing '''
-    # def double_hash(self, key, size, tries):
-    #     return (tries * self.base_hash(key, size)) % len(bucket)
+    ''' Second hash function for double hashing '''
+    def _double_hash(self, old_index, size, tries):
+        return (old_index + 1) % size
 
     ''' Determines the load factor on the hash table
         Load factor = N / M
@@ -122,9 +130,7 @@ class HashTable:
             return result[:-2] + '}'
 
     def main():
-        # value = int(inset("Enter a value"))
         table = HashTable()
-        # table.set(1, 8)
         table.set("Bitonic", 5)
         table.set("Lambda", 90)
         table.set("Joey", 90)
@@ -149,8 +155,8 @@ class HashTable:
 
         print("Number of items: " + str(table.length))
         print(table)
-        getValue = input("Enter value to get \n")
-        print(table.get(getValue))
+        # getValue = input("Enter value to get \n")
+        # print(table.get(getValue))
 
 if __name__ == '__main__':
     HashTable.main()

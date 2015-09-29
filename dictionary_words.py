@@ -33,11 +33,11 @@ def main(filename):
     histogram_list = build_histogram(filename)
     freq = frequency("mystery", histogram_list)
     words = unique_words(histogram_list)
-    rand_word = random_word(histogram_list)
+    # rand_word = random_word(histogram_list)
     print(freq)
     print(words)
     # print(histogram_list)
-    print("Random word is: " + rand_word)
+    # print("Random word is: " + rand_word)
     # word = randomWord(histogram_list)
     # print(histogram_list)
 
