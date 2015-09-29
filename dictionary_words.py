@@ -27,19 +27,32 @@ def random_word(histogram_list):
     histogram = list(histogram_list.keys())
     return histogram[random_index]
 
+''' Computes the weight of a word in a corpus '''
+
+
+def compute_word_weight(histogram):
+    frequency_histogram = HashTable()
+    for word in histogram.keys():
+        if word is None:
+            print(word)
+        word_frequency = frequency(word, histogram) / unique_words(histogram)
+        frequency_histogram[word] = word_frequency
+    return frequency_histogram
+
 
 def main(filename):
-    # dictionary_builder.searchDir('/')
+
     histogram_list = build_histogram(filename)
     freq = frequency("mystery", histogram_list)
     words = unique_words(histogram_list)
-    # rand_word = random_word(histogram_list)
+    rand_word = random_word(histogram_list)
     print(freq)
     print(words)
-    # print(histogram_list)
-    # print("Random word is: " + rand_word)
-    # word = randomWord(histogram_list)
-    # print(histogram_list)
+
+    print("Random word is: " + rand_word)
+    print("Word Weights: \n")
+    # print(compute_word_weight(histogram_list))
+
 
 # main('Resources/TestFiles/test_file.txt')
 # main('Resources/TestFiles/robinson_crusoe.txt')

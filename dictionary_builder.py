@@ -2,6 +2,7 @@ import re
 import os.path
 from hash_table import *
 
+
 '''
     Crawls a directory for a list of .txt files and builds a dictionary of
     words mapped to frequency of the words
@@ -34,7 +35,7 @@ def build_histogram(filename):
     word_dict = HashTable()
     with open(filename, 'r') as a_file:
         for a_line in a_file:
-            words = re.split('\W+', a_line.lower())
+            words = re.findall("[a-zA-Z]+", a_line.lower())
             for word in words:
                 if not word_dict.contains(word):
                     word_dict[word] = 0
