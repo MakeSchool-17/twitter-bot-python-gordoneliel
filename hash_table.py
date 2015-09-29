@@ -1,4 +1,5 @@
 ''' A HashTable implementation using closed and double hashing '''
+import timeit
 
 
 class HashTable:
@@ -25,46 +26,47 @@ class HashTable:
     def get(self, key):
         tries = 1
         index = self._base_hash(key, self.size, tries)
+        initial_index = index
         found = False
 
         if self.buckets[index] is None:
-            return self.buckets[index]
+            return None
         elif self.buckets[index][0] == key:
             return self.buckets[index][1]
         else:
-            tries += 1
-            index = self._base_hash(key, self.size, tries)
-            while self.buckets[index] is not None and self.buckets[index][0] != key and not found:
+            while self.buckets[index] is not None and not found and initial_index != index:
+                print("Get indices: " + str(index))
                 if self.buckets[index][0] == key:
                     found = True
                 else:
                     tries += 1
                     index = self._base_hash(key, self.size, tries)
-            return self.buckets[index]
+            if found:
+                return self.buckets[index][1]
+            else:
+                return None
 
     def contains(self, key):
         return True if self.get(key) is not None else False
 
     def _set_internal(self, bucket, key, value):
         tries = 1
-
         index = self._base_hash(key, self.size, tries)
         if bucket[index] is None:
             bucket[index] = (key, value)
             self.length += 1
+        elif bucket[index][0] == key:
+            bucket[index] = (key, value)
         else:
-            if bucket[index][0] == key:
-                bucket[index][1] = value
-            else:
+            while bucket[index] is not None and bucket[index][0] != key:
+                print("Set indices: " + str(index))
                 tries += 1
                 index = self._base_hash(key, self.size, tries)
 
-                while bucket[index] is not None and bucket[index][0] != key:
-                    tries += 1
-                    index = self._base_hash(key, self.size, tries)
-                if bucket[index] is None:
-                    bucket[index] = (key, value)
-                    self.length += 1
+            if bucket[index] is None:
+                self.length += 1
+
+            bucket[index] = (key, value)
 
     ''' Grow buckets
         Double the size of the hashtable each time the load factor exceeds
@@ -127,19 +129,28 @@ class HashTable:
         table.set("Lambda", 90)
         table.set("Joey", 90)
         table.set("34", 78)
-        table.set("Molly", 90)
+        table.set("Molly", 34)
         table.set("654", 18)
         table["4"] = 99
+
+        print("Get Bitonic: " + str(table["Bitonic"]))
+        print("Get Joey: " + str(table["Joey"]))
+        print("Get Molly: " + str(table["Molly"]))
 
         print("Number of items: " + str(len(table)))
         table["Peter"] = 49
         table["Joseph"] = 3
         table["Noah"] = 92
         table["Hugh"] = 1
+        print(table["Hugh"])
+        table["Hugh"] += 2
+        # for i in range(9):
+        #     table[str(i)] = 9
+
         print("Number of items: " + str(table.length))
         print(table)
         getValue = input("Enter value to get \n")
-        print(table.contains(getValue))
+        print(table.get(getValue))
 
 if __name__ == '__main__':
     HashTable.main()

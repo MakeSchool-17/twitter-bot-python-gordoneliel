@@ -1,5 +1,6 @@
 import re
 import os.path
+from hash_table import *
 
 '''
     Crawls a directory for a list of .txt files and builds a dictionary of
@@ -13,6 +14,7 @@ topdir = '.'
 # The arg argument for walk, and subsequently ext for step
 exten = '.txt'
 
+
 def searchDir(root_dir):
     for dirpath, dirnames, files in os.walk(topdir):
         for name in files:
@@ -25,25 +27,19 @@ def searchDir(root_dir):
     and frequency of the word in a file
 
     Returns a dictionary of words mapped to frequency
-
 '''
+
+
 def build_histogram(filename):
-    word_dict = {}
+    word_dict = HashTable()
     with open(filename, 'r') as a_file:
         for a_line in a_file:
             words = re.split('\W+', a_line.lower())
             for word in words:
-                if word not in word_dict:
+                if not word_dict.contains(word):
                     word_dict[word] = 0
                 word_dict[word] += 1
     return word_dict
-
-
-# def searchDir(root_dir):
-#     for root, subFolders, files in os.walk(root_dir):
-#         for file in files:
-
-
 
 if __name__ == '__main__':
     main()

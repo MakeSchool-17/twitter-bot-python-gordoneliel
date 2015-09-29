@@ -1,5 +1,5 @@
 import random
-import dictionary_builder
+from dictionary_builder import *
 
 '''/usr/share/dict/words'''
 '''Resources/TestFiles/diary_of_a_turk.txt'''
@@ -30,7 +30,7 @@ def random_word(histogram_list):
 
 def main(filename):
     # dictionary_builder.searchDir('/')
-    histogram_list = dictionary_builder.build_histogram(filename)
+    histogram_list = build_histogram(filename)
     freq = frequency("mystery", histogram_list)
     words = unique_words(histogram_list)
     rand_word = random_word(histogram_list)
@@ -43,9 +43,7 @@ def main(filename):
 
 # main('Resources/TestFiles/test_file.txt')
 # main('Resources/TestFiles/robinson_crusoe.txt')
-main('Resources/TestFiles/sherlock_holmes.txt')
 
 
 if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
+    main('Resources/TestFiles/sherlock_holmes.txt')
