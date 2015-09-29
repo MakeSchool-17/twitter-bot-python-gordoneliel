@@ -1,6 +1,6 @@
 ''' A HashTable implementation using closed and double hashing '''
 import timeit
-
+from LinkedList import *
 
 class HashTable:
     def __init__(self):
@@ -59,7 +59,7 @@ class HashTable:
         initial_index = index
 
         if bucket[index] is None:
-            bucket[index] = (key, value)
+            bucket[index] = LinkedList((key, value))
             self.length += 1
         elif bucket[index][0] == key:
             bucket[index] = (key, value)
