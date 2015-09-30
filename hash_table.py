@@ -5,9 +5,10 @@ from LinkedList import *
 
 class HashTable:
     def __init__(self):
-        self.size = 15
+        self.size = 47
         self.length = 0
         self.buckets = [None] * self.size
+        self.values = [None] * self.size
 
         self.LOAD_FACTOR_THRESHOLD = 0.6
 
@@ -25,23 +26,9 @@ class HashTable:
     ''' Get a key value pair from the HashTable '''
     def get(self, key):
         index = self._base_hash(key, self.size)
-        initial_index = index
-        hash2 = self._double_hash(key, self.size)
         if self.buckets[index] is None:
             return None
-        elif self.buckets[index][0] == key:
-            return self.buckets[index][1]
-        else:
-            while self.buckets[index] is not None:
-                if self.buckets[index][0] == key:
-                    return self.buckets[index][1]
-                else:
-                    index += hash2
-                    index %= self.size
-
-                if initial_index == index:
-                    break
-            return None
+        return self.buckets[index].find(key)
 
     def keys(self):
         keys = []
@@ -57,17 +44,22 @@ class HashTable:
 
     def _set_internal(self, bucket, key, value):
         index = self._base_hash(key, self.size)
-        hash2 = self._double_hash(key, self.size)
-        initial_index = index
 
         if bucket[index] is None:
-            bucket[index] = LinkedList((key, value))
-            self.length += 1
+            # bucket[index] = key
+
+            linked_list = LinkedList()
+            linked_list.insert(key, value)
+            bucket[index] = linked_list
         else:
-            for elem in iter(bucket[index]):
-
-
-    ''' Grow buckets
+            # linked_list exists, get
+            linked_list = bucket[index]
+            if linked_list.find(key) is not None:
+                linked_list.delete(key)
+                self.length -= 1
+            linked_list.insert(key, value)
+        self.length += 1
+    '''Grow buckets
         Double the size of the hashtable each time the load factor exceeds
         LOAD_FACTOR_THRESHOLD
     '''
@@ -106,13 +98,6 @@ class HashTable:
     def _load_factor(self):
         return self.length / self.size
 
-    def _is_prime(self, startnumber):
-        startnumber *= 1.0
-        for divisor in range(2, int(startnumber ** 0.5) + 1):
-            if startnumber / divisor == int(startnumber / divisor):
-                return False
-        return True
-
     ''' Setters and Getters '''
     def __setitem__(self, key, value):
             self.set(key, value)
@@ -125,9 +110,10 @@ class HashTable:
 
     def __str__(self):
             result = '{'
-            for key_value_pair in self.buckets:
-                if key_value_pair is not None:
-                    result = result + str(key_value_pair[0]) + ' : ' + str(key_value_pair[1]) + ', '
+            for bucket in self.buckets:
+                if bucket is not None:
+                    for elem in iter(bucket):
+                        result = result + str(elem) + ', '
             return result[:-2] + '}'
 
     def main():
@@ -143,7 +129,7 @@ class HashTable:
         print("Get Bitonic: " + str(table["Bitonic"]))
         print("Get Joey: " + str(table["Joey"]))
         print("Get Molly: " + str(table["Molly"]))
-
+        #
         print("Number of items: " + str(len(table)))
         table["Peter"] = 49
         table["Joseph"] = 3
@@ -155,8 +141,13 @@ class HashTable:
         table["Ben"] = 449
         table["Ion"] = 232
         table["Play"] = 1942
+        print(table["Play"])
         print("Number of items: " + str(table.length))
-        print(table)
+        for elem in table.buckets:
+            if elem is not None:
+                for item in iter(elem):
+                    print(item)
+        # print(table)
 
 if __name__ == '__main__':
     HashTable.main()
