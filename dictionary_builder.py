@@ -35,12 +35,23 @@ def build_histogram(filename):
     word_dict = HashTable()
     with open(filename, 'r') as a_file:
         for a_line in a_file:
-            words = re.findall("[a-zA-Z]+", a_line.lower())
+            words = re.findall(r"[a-zA-Z]+", a_line)
             for word in words:
                 if not word_dict.contains(word):
                     word_dict[word] = 0
                 word_dict[word] += 1
     return word_dict
 
+
+def build_histogramPy(filename):
+    word_dict = {}
+    with open(filename, 'r') as a_file:
+        for a_line in a_file:
+            words = re.findall("[a-zA-Z]+", a_line.lower())
+            for word in words:
+                if word not in word_dict:
+                    word_dict[word] = 0
+                word_dict[word] += 1
+    return word_dict
 if __name__ == '__main__':
     main()

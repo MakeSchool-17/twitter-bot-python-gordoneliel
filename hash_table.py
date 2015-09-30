@@ -5,7 +5,7 @@ from LinkedList import *
 
 class HashTable:
     def __init__(self):
-        self.size = 17
+        self.size = 2593
         self.length = 0
         self.buckets = [None] * self.size
 
@@ -27,21 +27,14 @@ class HashTable:
         index = self._base_hash(key, self.size)
         initial_index = index
         hash2 = self._double_hash(key, self.size)
-        if self.buckets[index] is None:
-            return None
-        elif self.buckets[index][0] == key:
-            return self.buckets[index][1]
-        else:
-            while self.buckets[index] is not None:
-                if self.buckets[index][0] == key:
-                    return self.buckets[index][1]
-                else:
-                    index += hash2
-                    index %= self.size
 
-                if initial_index == index:
-                    break
-            return None
+        while self.buckets[index] is not None:
+            if self.buckets[index][0] == key:
+                return self.buckets[index][1]
+            else:
+                index += hash2
+                index %= self.size
+        return None
 
     def keys(self):
         keys = []
@@ -63,11 +56,9 @@ class HashTable:
         while bucket[index] is not None and bucket[index][0] != key:
             index += hash2
 
-            if index >= self.size:
-                index %= self.size
-            print("Word: " + key + " " + str(index) + " " + str(bucket[index]))
-            # if initial_index == index:
-            #     self._grow()
+            # if index >= self.size:
+            index %= self.size
+            # print("Word: " + key + ", Value: " + str(value) + " index: " + str(index) + " kvp: " + str(bucket[index]))
         if bucket[index] is None:
             self.length += 1
         bucket[index] = (key, value)

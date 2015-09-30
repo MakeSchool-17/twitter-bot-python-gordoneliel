@@ -1,5 +1,6 @@
 import random
 from dictionary_builder import *
+import timeit
 
 '''/usr/share/dict/words'''
 '''Resources/TestFiles/diary_of_a_turk.txt'''
@@ -43,14 +44,20 @@ def compute_word_weight(histogram):
 def main(filename):
 
     histogram_list = build_histogram(filename)
+    # wl = list(histogram_list)
     freq = frequency("mystery", histogram_list)
+    freq_project = frequency("works", histogram_list)
+    # print(frequency(wl[-2], histogram_list))
     words = unique_words(histogram_list)
     rand_word = random_word(histogram_list)
+    for i in range(10000):
+        random_word(histogram_list)
     print(freq)
+    print("Freq of works: " + str(freq_project))
     print(words)
-
+    #
     print("Random word is: " + rand_word)
-    print("Word Weights: \n")
+    # print("Word Weights: \n")
     # print(compute_word_weight(histogram_list))
 
 
