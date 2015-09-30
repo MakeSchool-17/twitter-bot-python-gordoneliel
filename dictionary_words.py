@@ -40,18 +40,27 @@ def compute_word_weight(histogram):
         frequency_histogram[word] = word_frequency
     return frequency_histogram
 
+''' A Naive implementation of random word with weight '''
+
+
+def random_weighted_word(word_list):
+    random_index = random.randint(0, len(word_list) - 1)
+    return word_list[random_index]
+
 
 def main(filename):
 
-    histogram_list = build_histogram(filename)
-    # wl = list(histogram_list)
+    histogram_list, word_list = build_histogram(filename)
+
+    randWeight = random_weighted_word(word_list)
+    print("Weight Random: " + str(randWeight))
+
     freq = frequency("mystery", histogram_list)
     freq_project = frequency("works", histogram_list)
     # print(frequency(wl[-2], histogram_list))
     words = unique_words(histogram_list)
     rand_word = random_word(histogram_list)
-    for i in range(10000):
-        random_word(histogram_list)
+
     print(freq)
     print("Freq of works: " + str(freq_project))
     print(words)
