@@ -1,12 +1,14 @@
 ''' A HashTable implementation using closed and double hashing '''
 import timeit
+from LinkedList import *
 
 
 class HashTable:
     def __init__(self):
-        self.size = 15
+        self.size = 17
         self.length = 0
         self.buckets = [None] * self.size
+
         self.LOAD_FACTOR_THRESHOLD = 0.6
 
     ''' set a key value pair in to the HashTable  or replace existing '''
@@ -58,34 +60,32 @@ class HashTable:
         hash2 = self._double_hash(key, self.size)
         initial_index = index
 
+        while bucket[index] is not None and bucket[index][0] != key:
+            index += hash2
+
+            if index >= self.size:
+                index %= self.size
+            print("Word: " + key + " " + str(index) + " " + str(bucket[index]))
+            # if initial_index == index:
+            #     self._grow()
         if bucket[index] is None:
-            bucket[index] = (key, value)
             self.length += 1
-        elif bucket[index][0] == key:
-            bucket[index] = (key, value)
-        else:
-            while bucket[index] is not None and bucket[index][0] != key:
-                index += hash2
-                if index >= self.size:
-                    index %= self.size
-                if initial_index == index:
-                    self._grow()
-            if bucket[index] is None:
-                self.length += 1
-            bucket[index] = (key, value)
+        bucket[index] = (key, value)
+        return True
 
     ''' Grow buckets
         Double the size of the hashtable each time the load factor exceeds
         LOAD_FACTOR_THRESHOLD
     '''
     def _grow(self):
-        new_size = (self.size * 2) + 1
-        while self._is_prime(new_size) is not True:
-            new_size += 1
-
+        new_size = (self.size * 2)
+        for i in range(new_size, self.size * 3):
+            if self._is_prime(i):
+                new_size = i
         self.length = 0
         self.size = new_size
         new_buckets = [None] * new_size
+
         for key_value_pair in self.buckets:
             if key_value_pair is not None:
                 key = key_value_pair[0]
