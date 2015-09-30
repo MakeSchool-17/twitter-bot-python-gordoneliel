@@ -2,11 +2,13 @@
 import timeit
 from LinkedList import *
 
+
 class HashTable:
     def __init__(self):
         self.size = 15
         self.length = 0
         self.buckets = [None] * self.size
+
         self.LOAD_FACTOR_THRESHOLD = 0.6
 
     ''' set a key value pair in to the HashTable  or replace existing '''
@@ -61,31 +63,22 @@ class HashTable:
         if bucket[index] is None:
             bucket[index] = LinkedList((key, value))
             self.length += 1
-        elif bucket[index][0] == key:
-            bucket[index] = (key, value)
         else:
-            while bucket[index] is not None and bucket[index][0] != key:
-                index += hash2
-                if index >= self.size:
-                    index %= self.size
-                if initial_index == index:
-                    self._grow()
-            if bucket[index] is None:
-                self.length += 1
-            bucket[index] = (key, value)
+            for elem in iter(bucket[index]):
+
 
     ''' Grow buckets
         Double the size of the hashtable each time the load factor exceeds
         LOAD_FACTOR_THRESHOLD
     '''
     def _grow(self):
-        new_size = (self.size * 2) + 1
-        while self._is_prime(new_size) is not True:
-            new_size += 1
-
+        new_size = (self.size * 2)
         self.length = 0
         self.size = new_size
         new_buckets = [None] * new_size
+        for bucket in new_buckets:
+            bucket = LinkedList()
+
         for key_value_pair in self.buckets:
             if key_value_pair is not None:
                 key = key_value_pair[0]

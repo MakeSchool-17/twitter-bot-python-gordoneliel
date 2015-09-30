@@ -17,6 +17,12 @@ class ListNode:
     def set_next(self, new_next):
         self.next_node = new_next
 
+    def __str__(self):
+        return str(self.data)
+
+
+''' Linked list for hashtable '''
+
 
 class LinkedList:
     def __init__(self, head=None):
@@ -68,6 +74,13 @@ class LinkedList:
             previous_p = current_p
             current_p = current_p.get_next()
 
+    ''' Iterator '''
+
+    def __iter__(self):
+        while True and self.head.get_next() is not None:
+            yield self.head
+            self.head = self.head.get_next()
+
     def main():
         linked_list = LinkedList()
         for i in range(10):
@@ -76,6 +89,8 @@ class LinkedList:
         linked_list.delete(5)
         print(len(linked_list))
         linked_list.delete(8)
-        print(linked_list)
+        for elem in iter(linked_list):
+            print("List value: " + str(elem))
+        # print(linked_list)
 if __name__ == '__main__':
     LinkedList.main()
