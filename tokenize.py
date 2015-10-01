@@ -4,7 +4,7 @@
 import re
 
 
-def tokenize_line(corpus):
+def tokenize(corpus):
     tokens = remove_punctuation(corpus)
     tokens = split_line(tokens)
     return tokens

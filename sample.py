@@ -3,7 +3,7 @@
 '''
 
 import random
-from dictionary_builder import build_histogram
+import dictionary_builder
 
 '''/usr/share/dict/words'''
 '''Resources/TestFiles/diary_of_a_turk.txt'''
@@ -51,9 +51,9 @@ def random_weighted_word(word_list):
     return word_list[random_index]
 
 
-def main(filename):
+def main():
 
-    histogram_list, word_list = build_histogram(filename)
+    histogram_list, word_list = dictionary_builder.build_histogram('Resources/TestFiles/sherlock_holmes.txt')
 
     randWeight = random_weighted_word(word_list)
     print("Weight Random: " + str(randWeight) + " " + str(histogram_list[randWeight]))
@@ -78,4 +78,4 @@ def main(filename):
 
 
 if __name__ == "__main__":
-    main('Resources/TestFiles/sherlock_holmes.txt')
+    main()

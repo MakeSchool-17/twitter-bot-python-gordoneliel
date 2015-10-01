@@ -1,12 +1,18 @@
+import cleanup
+import tokenize
 import dictionary_builder
-import dictionary_words
+import sample
 
 
 ''' Starting point for app '''
 
 
+def setup():
+    pass
+
+
 def main():
-    dictionary_words()
+    pass
 
 
 if __name__ == '__main__':

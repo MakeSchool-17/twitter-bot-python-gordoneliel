@@ -23,8 +23,8 @@ def searchDir(root_dir):
     for dirpath, dirnames, files in os.walk(topdir):
         for name in files:
             if name.lower().endswith(exten):
-                print(os.path.join(dirpath, name))
-                build_histogram(name)
+                path = os.path.join(dirpath, name)
+                build_histogram(path)
 
 ''' Opens a file and appends the contents into a list
     Creates a 'histogram' which is a dictionary of a word
@@ -58,5 +58,11 @@ def build_histogramPy(filename):
                     word_dict[word] = 0
                 word_dict[word] += 1
     return word_dict
+
+
+def main(filename):
+    # searchDir('/')
+    build_histogram(filename)
+
 if __name__ == '__main__':
-    main()
+    main('Resources/TestFiles/sherlock_holmes.txt')
