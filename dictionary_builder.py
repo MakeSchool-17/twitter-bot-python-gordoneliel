@@ -31,6 +31,23 @@ def searchDir(root_dir):
 '''
 
 
+def tokenize_line(a_line):
+    tokens = remove_punctuation(a_line)
+    tokens = split_line(tokens)
+    return tokens
+
+
+def remove_punctuation(a_line):
+    no_punct = re.sub('[,.()]', '', a_line)
+    no_punct = re.sub('--', ' ', no_punct)
+    no_punct = re.sub(r'".*?"', no_punct)
+    return no_punct
+
+
+def split_line(a_line):
+    return re.split('\s+', a_line)
+
+
 def build_histogram(filename):
     word_dict = HashTable()
     list_word = []
