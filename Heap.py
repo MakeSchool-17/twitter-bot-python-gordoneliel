@@ -13,7 +13,11 @@ class MaxHeap:
         self._percolate_up(self.size - 1)
 
     def delete_max(self):
-        pass
+        # Replace the first item which is max with the furthes elem in array
+        self.list[0] = self.list[self.size - 1]
+        self.size -= 1
+        self.list.pop()  # Remove the last element from the list
+        self._percolate_down()
 
     def peek(self):
         pass
@@ -21,7 +25,7 @@ class MaxHeap:
     def _percolate_up(self, node):
         # Compare the node with its parent, if it is greater, swap with parent
         # Continue until heap order is restored
-        parent_index = (node) // 2
+        parent_index = (node - 1) // 2
         print(node, parent_index)
 
         parent_node = self.list[parent_index]
@@ -38,7 +42,15 @@ class MaxHeap:
             self._percolate_up(parent_index)
 
     def _percolate_down(self, node):
-        pass
+        # left child is 2k
+        # right child is 2k + 1
+
+        parent_index = (node - 1) // 2
+
+        parent_node = self.list[parent_index]
+        child_node = self.list[node]
+
+
 
     def _swap_nodes(self, parent, child):
         self.list[parent], self.list[child] = self.list[child], self.list[parent]
@@ -51,15 +63,28 @@ class MaxHeap:
 
     def main():
         heap = MaxHeap()
-        # for i in range(1, 6):
-        #     heap.insert(i)
-        # "1, 2, 3, 4, 5"
-        # "[5, 4, 3, 1, 2]"
+
+        # heap.insert(11)
+        # heap.insert(5)
+        # heap.insert(2)
+        # heap.insert(8)
+        # heap.insert(9)
+        # heap.insert(1)
+        # heap.insert(12)
+        # heap.insert(16)
+        # heap.insert(0)
+        # heap.insert(22)
+        # heap.delete_max()
+        heap.insert(18)
         heap.insert(5)
-        heap.insert(2)
-        heap.insert(8)
+        heap.insert(21)
         heap.insert(9)
-        heap.insert(1)
+        heap.insert(11)
+        heap.insert(27)
+        heap.insert(14)
+        heap.insert(33)
+        heap.insert(19)
+        heap.insert(17)
 
         print(heap)
 

@@ -43,7 +43,7 @@ def random_word(histogram_list):
 #         frequency_histogram[word] = word_frequency
 #     return frequency_histogram
 
-''' A Naive implementation of random word with weight '''
+''' Returns a random word from a list of words '''
 
 
 def random_weighted_word(word_list):

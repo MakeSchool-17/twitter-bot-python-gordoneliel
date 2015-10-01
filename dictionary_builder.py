@@ -34,7 +34,7 @@ def searchDir(root_dir):
 '''
 
 
-def build_histogram(filename):
+def build_histogram_with_file(filename):
     word_dict = HashTable()
     list_word = []
     with open(filename, 'r') as a_file:
@@ -48,16 +48,17 @@ def build_histogram(filename):
     return word_dict, list_word
 
 
-def build_histogramPy(filename):
-    word_dict = {}
-    with open(filename, 'r') as a_file:
-        for a_line in a_file:
-            words = re.findall("[a-zA-Z]+", a_line.lower())
-            for word in words:
-                if word not in word_dict:
-                    word_dict[word] = 0
-                word_dict[word] += 1
-    return word_dict
+''' Builds a histogram '''
+
+
+def build_histogram(tokens):
+    histogram = HashTable()
+    for token in tokens:
+        if not histogram.contains(token):
+            histogram[token] = 0
+        histogram[token] += 1
+
+    return histogram
 
 
 def main(filename):
