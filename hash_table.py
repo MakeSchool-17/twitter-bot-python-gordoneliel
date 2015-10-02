@@ -1,6 +1,5 @@
 ''' A HashTable implementation using closed and double hashing '''
 import timeit
-from LinkedList import *
 
 
 class HashTable:
@@ -25,7 +24,6 @@ class HashTable:
     ''' Get a key value pair from the HashTable '''
     def get(self, key):
         index = self._base_hash(key, self.size)
-        initial_index = index
         hash2 = self._double_hash(key, self.size)
 
         while self.buckets[index] is not None:
@@ -51,7 +49,6 @@ class HashTable:
     def _set_internal(self, bucket, key, value):
         index = self._base_hash(key, self.size)
         hash2 = self._double_hash(key, self.size)
-        initial_index = index
 
         while bucket[index] is not None and bucket[index][0] != key:
             index += hash2

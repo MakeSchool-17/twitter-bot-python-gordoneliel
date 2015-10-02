@@ -1,6 +1,9 @@
 import re
 import os.path
-from hash_table import *
+from hash_table import HashTable
+
+''' Module for generating a dictionary of words mapped to frequency aka histogram
+from a list of tokens '''
 
 
 '''
@@ -20,8 +23,8 @@ def searchDir(root_dir):
     for dirpath, dirnames, files in os.walk(topdir):
         for name in files:
             if name.lower().endswith(exten):
-                print(os.path.join(dirpath, name))
-                build_histogram(name)
+                path = os.path.join(dirpath, name)
+                build_histogram(path)
 
 ''' Opens a file and appends the contents into a list
     Creates a 'histogram' which is a dictionary of a word
@@ -31,24 +34,7 @@ def searchDir(root_dir):
 '''
 
 
-def tokenize_line(a_line):
-    tokens = remove_punctuation(a_line)
-    tokens = split_line(tokens)
-    return tokens
-
-
-def remove_punctuation(a_line):
-    no_punct = re.sub('[,.()]', '', a_line)
-    no_punct = re.sub('--', ' ', no_punct)
-    no_punct = re.sub(r'".*?"', no_punct)
-    return no_punct
-
-
-def split_line(a_line):
-    return re.split('\s+', a_line)
-
-
-def build_histogram(filename):
+def build_histogram_with_file(filename):
     word_dict = HashTable()
     list_word = []
     with open(filename, 'r') as a_file:
@@ -62,15 +48,22 @@ def build_histogram(filename):
     return word_dict, list_word
 
 
-def build_histogramPy(filename):
-    word_dict = {}
-    with open(filename, 'r') as a_file:
-        for a_line in a_file:
-            words = re.findall("[a-zA-Z]+", a_line.lower())
-            for word in words:
-                if word not in word_dict:
-                    word_dict[word] = 0
-                word_dict[word] += 1
-    return word_dict
+''' Builds a histogram '''
+
+
+def build_histogram(tokens):
+    histogram = HashTable()
+    for token in tokens:
+        if not histogram.contains(token):
+            histogram[token] = 0
+        histogram[token] += 1
+
+    return histogram
+
+
+def main(filename):
+    # searchDir('/')
+    build_histogram(filename)
+
 if __name__ == '__main__':
-    main()
+    main('Resources/TestFiles/sherlock_holmes.txt')
