@@ -4,6 +4,7 @@
 import re
 from string import punctuation
 
+
 def tokenize(corpus):
     tokens = remove_punctuation(corpus)
     tokens = split_line(tokens)
@@ -24,4 +25,5 @@ if __name__ == '__main__':
     import sys
     source = open(sys.argv[1]).read()
     tokens = tokenize(source)
+    source.close()
     print(tokens)

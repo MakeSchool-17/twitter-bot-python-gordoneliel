@@ -15,25 +15,23 @@ class MaxHeap:
     def delete_max(self):
         # Replace the first item which is max with the furthes elem in array
         self.list[0] = self.list[self.size - 1]
-        self.size -= 1
         self.list.pop()  # Remove the last element from the list
+        self.size -= 1
         self._percolate_down()
 
     def peek(self):
         pass
 
-    def _percolate_up(self, node):
+    def _percolate_up(self, child_index):
         # Compare the node with its parent, if it is greater, swap with parent
         # Continue until heap order is restored
-        parent_index = (node - 1) // 2
-        print(node, parent_index)
+        parent_index = (child_index - 1) // 2
 
         parent_node = self.list[parent_index]
-        child_node = self.list[node]
+        child_node = self.list[child_index]
 
-        print("parent_node: " + str(parent_node) + " child_node: " + str(child_node))
         if parent_node < child_node:
-            self._swap_nodes(parent_index, node)
+            self._swap_nodes(parent_index, child_index)
 
         # Base case for recursion
         if parent_index <= 0:
@@ -41,16 +39,32 @@ class MaxHeap:
         else:
             self._percolate_up(parent_index)
 
-    def _percolate_down(self, node):
+    def _percolate_down(self, parent_index=0):
         # left child is 2k
         # right child is 2k + 1
+        left_child_index = 2 * parent_index + 1
+        right_child_index = left_child_index + 1
+        if parent_index == 0:
+            left_child_index = 1
+            right_child_index = 2
 
-        parent_index = (node - 1) // 2
+        if left_child_index >= self.size - 1 or right_child_index >= self.size - 1:
+            return
 
+        left_child = self.list[left_child_index]
+        right_child = self.list[right_child_index]
         parent_node = self.list[parent_index]
-        child_node = self.list[node]
 
-
+        print(parent_index, left_child_index, right_child_index)
+        print(parent_node, left_child, right_child)
+        if parent_node < left_child:
+            self._swap_nodes(parent_index, left_child_index)
+            print("Parent index < left_child " + str(left_child_index))
+            self._percolate_down(left_child_index)
+        else:
+            self._swap_nodes(parent_index, right_child_index)
+            print("Parent index < right_child " + str(right_child_index))
+            self._percolate_down(right_child_index)
 
     def _swap_nodes(self, parent, child):
         self.list[parent], self.list[child] = self.list[child], self.list[parent]
@@ -85,6 +99,10 @@ class MaxHeap:
         heap.insert(33)
         heap.insert(19)
         heap.insert(17)
+
+        print(heap)
+
+        heap.delete_max()
 
         print(heap)
 
