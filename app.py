@@ -25,6 +25,10 @@ def sample_word(tokens):
     return sample.random_weighted_word(tokens)
 
 
+def generate_sentence():
+    pass
+
+
 def main():
     # fetch_corpus()  # Fetch corpus and save to corpus.txt
     tokens = tokenize_source("corpus.txt")

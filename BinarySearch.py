@@ -1,4 +1,4 @@
-''' '''
+''' Binary Search '''
 
 
 def binarySearch(list, data):
