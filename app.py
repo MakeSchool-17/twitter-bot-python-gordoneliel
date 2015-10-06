@@ -26,7 +26,7 @@ def sample_word(tokens):
 
 
 def generate_sentence():
-    pass
+    return sentence.generate_sentence()
 
 
 def main():
@@ -39,5 +39,4 @@ def main():
 
 
 if __name__ == '__main__':
-    import sys
     main()

@@ -1,6 +1,7 @@
 ''' sentence.py
     Module for generating sentences using markov chains
 '''
+import markov_model
 
 
 def generate_sentence():
@@ -11,4 +12,5 @@ def main():
     pass
 
 if __name__ == '__main__':
-    main()
+    import sys
+    main(sys.argv[1])
