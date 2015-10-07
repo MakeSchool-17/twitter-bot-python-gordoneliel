@@ -48,6 +48,7 @@ class MaxHeap:
             left_child_index = 1
             right_child_index = 2
 
+        # Base Case
         if left_child_index >= self.size - 1 or right_child_index >= self.size - 1:
             return
 

@@ -25,8 +25,8 @@ def sample_word(tokens):
     return sample.random_weighted_word(tokens)
 
 
-def generate_sentence():
-    return sentence.generate_sentence()
+def generate_sentence(tokens):
+    return sentence.generate_sentence(tokens)
 
 
 def main():
@@ -36,6 +36,7 @@ def main():
     # histogram = dictionary_builder.build_histogram(tokens)
     random_word = sample_word(tokens)
     print(random_word)
+    generate_sentence(tokens)
 
 
 if __name__ == '__main__':

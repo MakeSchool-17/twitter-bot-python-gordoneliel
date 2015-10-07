@@ -4,8 +4,8 @@
 import markov_model
 
 
-def generate_sentence():
-    pass
+def generate_sentence(tokens):
+    markov_model.MarkovModel(tokens).generate_markov_model()
 
 
 def main():
