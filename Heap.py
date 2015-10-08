@@ -56,15 +56,15 @@ class MaxHeap:
         right_child = self.list[right_child_index]
         parent_node = self.list[parent_index]
 
-        print(parent_index, left_child_index, right_child_index)
-        print(parent_node, left_child, right_child)
+        # print(parent_index, left_child_index, right_child_index)
+        # print(parent_node, left_child, right_child)
         if parent_node < left_child:
             self._swap_nodes(parent_index, left_child_index)
-            print("Parent index < left_child " + str(left_child_index))
+            # print("Parent index < left_child " + str(left_child_index))
             self._percolate_down(left_child_index)
         else:
             self._swap_nodes(parent_index, right_child_index)
-            print("Parent index < right_child " + str(right_child_index))
+            # print("Parent index < right_child " + str(right_child_index))
             self._percolate_down(right_child_index)
 
     def _swap_nodes(self, parent, child):
