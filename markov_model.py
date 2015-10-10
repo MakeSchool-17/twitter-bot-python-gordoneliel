@@ -35,7 +35,7 @@ class MarkovModel:
                     markov_table[previous_token] = inner_markov_table
             previous_token = current_token
 
-        print(markov_table)
+        # print(markov_table)
         return markov_table
 
 if __name__ == '__main__':
