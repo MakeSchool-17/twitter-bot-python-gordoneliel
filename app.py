@@ -30,8 +30,8 @@ def main():
     # random_word = sample_word(tokens)
     # print(random_word)
     # generate_sentence(tokens)
-    print(str(generate_sentence(tokens)))
+    return (str(generate_sentence(tokens)))
 
 if __name__ == '__main__':
     main()
-    # app.run()
+    app.run()
