@@ -1,5 +1,5 @@
-''' cleanup.py
-    Module for cleaning up a source text fromt the web
+''' div_bot.py
+    Module for fetching source text fromt the web
 '''
 import requests
 

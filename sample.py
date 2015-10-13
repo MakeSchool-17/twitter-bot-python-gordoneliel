@@ -12,8 +12,8 @@ import dictionary_builder
 ''' Returns the number of unique words in the histogram '''
 
 
-def unique_words(histogram):
-    return len(histogram)
+def unique_words(word_list):
+    return len(word_list)
 
 ''' Returns the frequency of a word in a histogram
     histogram - The histogram to get word and frequency
