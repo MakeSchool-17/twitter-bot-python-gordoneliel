@@ -5,6 +5,9 @@ import sample
 import sentence
 from flask import Flask
 
+PORT = int(os.environ.get('PORT', 5000))
+DEBUG_MODE = True
+
 ''' Fetches a corpus for tokenizing '''
 URLS_FILE = 'urls_file.txt'
 app = Flask(__name__)
@@ -35,4 +38,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    app.run()
+    app.run(debug=DEBUG_MODE, port=PORT)
