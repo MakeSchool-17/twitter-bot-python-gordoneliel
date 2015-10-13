@@ -13,6 +13,8 @@ DEBUG_MODE = False
 URLS_FILE = 'urls_file.txt'
 app = Flask(__name__)
 
+my_tokens = []
+
 
 def fetch_corpus():
     return div_bot.main(URLS_FILE)
@@ -25,9 +27,8 @@ def generate_sentence(tokens):
 
 @app.route('/')
 def main():
-    print("HELLLLLOOOO")
     # fetch_corpus()  # Fetch corpus and save to corpus.txt
-    (start_words, tokens) = tokenize.tokenize_source("corpus.txt")
+    # (start_words, tokens) = tokenize.tokenize_source("corpus.txt")
     # print("New worddd: ")
     # print(start_words)
     # print(tokens)
@@ -38,5 +39,6 @@ def main():
     return (str(generate_sentence(tokens)))
 
 if __name__ == '__main__':
-    main()
+    (start_words, tokens) = tokenize.tokenize_source("corpus.txt")
+    my_tokens = tokens
     app.run(debug=DEBUG_MODE, port=PORT)
