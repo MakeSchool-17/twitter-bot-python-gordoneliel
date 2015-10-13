@@ -7,7 +7,7 @@ from flask import Flask
 import os
 
 PORT = int(os.environ.get('PORT', 5000))
-DEBUG_MODE = True
+DEBUG_MODE = False
 
 ''' Fetches a corpus for tokenizing '''
 URLS_FILE = 'urls_file.txt'
