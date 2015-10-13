@@ -10,9 +10,11 @@ def generate_sentence(tokens):
     markov_model_data = markov_model.MarkovModel(tokens).generate_markov_model()
     word_list = list(markov_model_data.keys())
     start_word = random_word(word_list)
+    cap_word = start_word.capitalize()
     # print("Start Word: " + start_word)
 
     sentence = ""
+    sentence += cap_word
     while True:
         #  Perform a random walk on the Markov Chain
         next_word_list = markov_model_data[start_word]
