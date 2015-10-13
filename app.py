@@ -4,6 +4,7 @@ import dictionary_builder
 import sample
 import sentence
 from flask import Flask
+import os
 
 PORT = int(os.environ.get('PORT', 5000))
 DEBUG_MODE = True
