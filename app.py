@@ -21,6 +21,7 @@ def generate_sentence(tokens):
 
 @app.route('/')
 def main():
+    print("HELLLLLOOOO")
     # fetch_corpus()  # Fetch corpus and save to corpus.txt
     (start_words, tokens) = tokenize.tokenize_source("corpus.txt")
     # print("New worddd: ")
