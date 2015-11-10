@@ -7,7 +7,7 @@ import re
 def tokenize_source(corpus_raw):
     tokens = []
     start_words = []
-    with open(corpus_raw, 'r') as a_file:
+    with open(corpus_raw, 'r') as a_file: # [brian] Nice! This is the best way to open a file.
         for a_line in a_file:
             words = tokenize(a_line)
             start_words.append(words[0])
@@ -35,4 +35,14 @@ if __name__ == '__main__':
     source = open(sys.argv[1]).read()
     tokens = tokenize(source)
     source.close()
+    
+    # [brian] I don't think the above `close()` works. For this to work you'd need to say:
+    source = open(sys.argv[1])
+    tokens = tokenize(source.read())
+    source.close()
+
+    # [brian] But even better is:
+    with open(sys.argv[1]) as source:
+        tokens = tokenize(source.read())
+
     print(tokens)
